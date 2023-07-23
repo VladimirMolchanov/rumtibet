@@ -1,6 +1,22 @@
 const path = require('path')
+const fs = require('fs')
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+
+function generateHtmlPlugins(templateDir) {
+    const templateFiles = fs.readdirSync(path.resolve(__dirname, templateDir));
+    return templateFiles.map(item => {
+        const parts = item.split('.');
+        const name = parts[0];
+        const extension = parts[1];
+        return new HtmlWebpackPlugin({
+            filename: `${name}.html`,
+            template: path.resolve(__dirname, `${templateDir}/${name}.${extension}`),
+        })
+    })
+}
+
+const htmlPlugins = generateHtmlPlugins('./src/html/views')
 
 module.exports = {
     entry: {
@@ -35,8 +51,5 @@ module.exports = {
         new MiniCssExtractPlugin({
             filename: "./css/[name].[hash].css",
         }),
-        new HtmlWebpackPlugin({
-            template: path.resolve(__dirname, './src/html/views/index.html')
-        })
-    ]
+    ].concat(htmlPlugins)
 }
