@@ -23,7 +23,12 @@ module.exports = {
                     'postcss-loader',
                     'sass-loader'
                 ]
-            }
+            },
+            {
+                test: /\.html$/i,
+                include: path.resolve(__dirname, './src/html/includes'),
+                use: [{ loader: 'html-loader' }],
+            },
         ]
     },
     plugins: [
@@ -31,7 +36,7 @@ module.exports = {
             filename: "./css/[name].[hash].css",
         }),
         new HtmlWebpackPlugin({
-            template: path.resolve(__dirname, './src/index.html')
+            template: path.resolve(__dirname, './src/html/views/index.html')
         })
     ]
 }

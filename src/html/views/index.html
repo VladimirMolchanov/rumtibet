@@ -9,5 +9,10 @@
 </head>
 <body>
     <h1>My site</h1>
+
+    <% var data = {
+    title: "Второй заголовок | Проект",
+    }; %>
+    <%= _.template(require('./../includes/header.html').default)(data) %>
 </body>
 </html>
