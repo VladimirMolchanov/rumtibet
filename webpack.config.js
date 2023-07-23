@@ -62,6 +62,14 @@ module.exports = {
                 }
             },
             {
+                test: /\.(svg|eot|ttf|woff|woff2)$/i,
+                type: 'asset/resource',
+                include: path.resolve(__dirname, './src/fonts'),
+                generator: {
+                    filename: 'assets/fonts/[hash][ext]'
+                }
+            },
+            {
                 test: /\.html$/i,
                 include: path.resolve(__dirname, './src/html/includes'),
                 use: [{ loader: 'html-loader' }],

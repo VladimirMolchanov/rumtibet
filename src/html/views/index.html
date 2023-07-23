@@ -9,12 +9,13 @@
 </head>
 <body>
     <h1>My site</h1>
+    <h1 class="roboto">My site</h1>
 
     <% var data = {
     title: "Второй заголовок | Проект",
     }; %>
     <%= _.template(require('./../includes/header.html').default)(data) %>
 
-    <img src=<%=require("../../img/1.jpeg")%> />
+    <img src="<%=require("../../img/1.jpeg")%>" />
 </body>
 </html>
