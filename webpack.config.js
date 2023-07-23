@@ -25,10 +25,13 @@ module.exports = (env, argv) => {
 
     return {
         entry: {
-            app: path.resolve(__dirname, './src/index.js')
+            app: [
+                path.resolve(__dirname, './src/index.js'),
+                path.resolve(__dirname, './src/scss/index.scss')
+            ]
         },
         output: {
-            filename: filename('js'),
+            filename: `assets/js/${filename('js')}`,
             path: path.resolve(__dirname, './dist'),
             assetModuleFilename: 'assets/[name][ext]',
         },
