@@ -19,76 +19,92 @@ function generateHtmlPlugins(templateDir) {
 
 const htmlPlugins = generateHtmlPlugins('./src/html/views')
 
-module.exports = {
-    entry: {
-        app: path.resolve(__dirname, './src/index.js')
-    },
-    output: {
-        filename: "[name].[fullhash].build.js",
-        path: path.resolve(__dirname, './dist'),
-        assetModuleFilename: 'assets/[name][ext]',
-        // clean: true
-    },
-    devServer: {
-        watchFiles: path.join(__dirname, './src'),
-        open: true,
-        client: {
-            overlay: true,
+module.exports = (env, argv) => {
+    const isDev = (argv.mode ?? 'development') === 'development';
+    const filename = (ext) => isDev ? `[name].${ext}` : `[name].[hash].${ext}`;
+
+    return {
+        entry: {
+            app: path.resolve(__dirname, './src/index.js')
         },
-        magicHtml: true,
-    },
-    devtool: 'source-map',
-    module: {
-        rules: [
-            {
-                test: /\.(?:js|mjs|cjs)$/,
-                exclude: /(node_modules|bower_components)/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: [
-                            ['@babel/preset-env', { targets: "defaults" }]
-                        ]
+        output: {
+            filename: filename('js'),
+            path: path.resolve(__dirname, './dist'),
+            assetModuleFilename: 'assets/[name][ext]',
+        },
+        devServer: {
+            watchFiles: path.join(__dirname, './src'),
+            open: true,
+            hot: isDev,
+            client: {
+                overlay: true,
+            },
+            magicHtml: true,
+        },
+        devtool: isDev ? 'source-map' : false,
+        resolve: {
+            alias: {
+                '@views': path.resolve(__dirname, 'src/html/views'),
+                '@includes': path.resolve(__dirname, 'src/html/includes'),
+                '@scss': path.resolve(__dirname, 'src/scss'),
+                '@': path.resolve(__dirname, 'src'),
+            }
+        },
+        module: {
+            rules: [
+                {
+                    test: /\.(?:js|mjs|cjs)$/,
+                    exclude: /(node_modules|bower_components)/,
+                    use: {
+                        loader: 'babel-loader',
+                        options: {
+                            presets: [
+                                ['@babel/preset-env', { targets: "defaults" }]
+                            ]
+                        }
                     }
-                }
-            },
-            {
-                test: /\.(sc|sa|c)ss$/i,
-                exclude: /(node_modules|bower_components)/,
-                use: [
-                    MiniCssExtractPlugin.loader,
-                    'css-loader',
-                    'postcss-loader',
-                    'sass-loader'
-                ]
-            },
-            {
-                test: /\.(png|jpe?g|gif|svg)$/i,
-                include: path.resolve(__dirname, './src/img'),
-                type: 'asset/resource',
-                generator: {
-                    filename: 'assets/images/[hash][ext]'
-                }
-            },
-            {
-                test: /\.(svg|eot|ttf|woff|woff2)$/i,
-                type: 'asset/resource',
-                include: path.resolve(__dirname, './src/fonts'),
-                generator: {
-                    filename: 'assets/fonts/[hash][ext]'
-                }
-            },
-            {
-                test: /\.html$/i,
-                include: path.resolve(__dirname, './src/html/includes'),
-                use: [{ loader: 'html-loader' }],
-            },
-        ]
-    },
-    plugins: [
-        new CleanWebpackPlugin(),
-        new MiniCssExtractPlugin({
-            filename: "./assets/css/[name].[hash].css",
-        }),
-    ].concat(htmlPlugins)
+                },
+                {
+                    test: /\.(sc|sa|c)ss$/i,
+                    exclude: /(node_modules|bower_components)/,
+                    use: [
+                        MiniCssExtractPlugin.loader,
+                        'css-loader',
+                        'postcss-loader',
+                        'sass-loader'
+                    ]
+                },
+                {
+                    test: /\.(png|jpe?g|gif|svg)$/i,
+                    include: path.resolve(__dirname, './src/img'),
+                    type: 'asset/resource',
+                    generator: {
+                        filename: 'assets/images/[hash][ext]'
+                    }
+                },
+                {
+                    test: /\.(svg|eot|ttf|woff|woff2)$/i,
+                    type: 'asset/resource',
+                    include: path.resolve(__dirname, './src/fonts'),
+                    generator: {
+                        filename: 'assets/fonts/[hash][ext]'
+                    }
+                },
+                {
+                    test: /\.html$/i,
+                    include: path.resolve(__dirname, './src/html/includes'),
+                    use: [{ loader: 'html-loader', options: {
+                            minimize: false,
+                        } }],
+
+                },
+            ]
+        },
+        plugins: [
+            new CleanWebpackPlugin(),
+            new MiniCssExtractPlugin({
+                filename: `./assets/css/${filename('css')}`,
+            }),
+        ].concat(htmlPlugins)
+    }
 }
