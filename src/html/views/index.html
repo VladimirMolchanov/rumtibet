@@ -1,21 +1,24 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
-</head>
-<body>
-    <h1>My site dsad fdsfsdd dsad</h1>
-    <h1 class="roboto">My site dsdasd</h1>
+    <head>
+        <meta charset="UTF-8" />
+        <meta
+            name="viewport"
+            content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+        />
+        <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+        <title>Document</title>
+    </head>
+    <body>
+        <h1>My site dsad fdsfsdd dsad</h1>
+        <h1 class="roboto">My site dsdasd</h1>
 
-    <% var data = {
-    title: "Второй заголовок | Проект",
-    }; %>
-    <%= _.template(require('./../includes/header.html').default)(data) %>
-
-    <img src="<%=require("../../img/1.jpeg")%>" />
-</body>
+        <% var data = { title: "Второй заголовок | Проект", }; %> <%=
+        _.template(require('./../includes/header.html').default)(data) %> <img
+        src="<%=require("../../img/1.jpeg")%>" />
+        <div>
+            <p>343432</p>
+            <p>343432</p>
+        </div>
+    </body>
 </html>

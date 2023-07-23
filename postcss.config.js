@@ -3,10 +3,13 @@ module.exports = {
         require('autoprefixer'),
         require('css-mqpacker'),
         require('cssnano')({
-            preset: ['default', {
-                normalizeWhitespace: false
-            }],
-        })
+            preset: [
+                'default',
+                {
+                    normalizeWhitespace: false,
+                },
+            ],
+        }),
     ],
-    minimize: false
+    minimize: false,
 }

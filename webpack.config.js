@@ -1,18 +1,21 @@
 const path = require('path')
 const fs = require('fs')
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
 function generateHtmlPlugins(templateDir) {
-    const templateFiles = fs.readdirSync(path.resolve(__dirname, templateDir));
-    return templateFiles.map(item => {
-        const parts = item.split('.');
-        const name = parts[0];
-        const extension = parts[1];
+    const templateFiles = fs.readdirSync(path.resolve(__dirname, templateDir))
+    return templateFiles.map((item) => {
+        const parts = item.split('.')
+        const name = parts[0]
+        const extension = parts[1]
         return new HtmlWebpackPlugin({
             filename: `${name}.html`,
-            template: path.resolve(__dirname, `${templateDir}/${name}.${extension}`),
+            template: path.resolve(
+                __dirname,
+                `${templateDir}/${name}.${extension}`,
+            ),
         })
     })
 }
@@ -20,15 +23,15 @@ function generateHtmlPlugins(templateDir) {
 const htmlPlugins = generateHtmlPlugins('./src/html/views')
 
 module.exports = (env, argv) => {
-    const isDev = (argv.mode ?? 'development') === 'development';
-    const filename = (ext) => isDev ? `[name].${ext}` : `[name].[hash].${ext}`;
+    const isDev = (argv.mode ?? 'development') === 'development'
+    const filename = (ext) => (isDev ? `[name].${ext}` : `[name].[hash].${ext}`)
 
     return {
         entry: {
             app: [
                 path.resolve(__dirname, './src/index.js'),
-                path.resolve(__dirname, './src/scss/index.scss')
-            ]
+                path.resolve(__dirname, './src/scss/index.scss'),
+            ],
         },
         output: {
             filename: `assets/js/${filename('js')}`,
@@ -51,7 +54,7 @@ module.exports = (env, argv) => {
                 '@includes': path.resolve(__dirname, 'src/html/includes'),
                 '@scss': path.resolve(__dirname, 'src/scss'),
                 '@': path.resolve(__dirname, 'src'),
-            }
+            },
         },
         module: {
             rules: [
@@ -62,10 +65,10 @@ module.exports = (env, argv) => {
                         loader: 'babel-loader',
                         options: {
                             presets: [
-                                ['@babel/preset-env', { targets: "defaults" }]
-                            ]
-                        }
-                    }
+                                ['@babel/preset-env', { targets: 'defaults' }],
+                            ],
+                        },
+                    },
                 },
                 {
                     test: /\.(sc|sa|c)ss$/i,
@@ -74,40 +77,44 @@ module.exports = (env, argv) => {
                         MiniCssExtractPlugin.loader,
                         'css-loader',
                         'postcss-loader',
-                        'sass-loader'
-                    ]
+                        'sass-loader',
+                    ],
                 },
                 {
                     test: /\.(png|jpe?g|gif|svg)$/i,
                     include: path.resolve(__dirname, './src/img'),
                     type: 'asset/resource',
                     generator: {
-                        filename: 'assets/images/[hash][ext]'
-                    }
+                        filename: 'assets/images/[hash][ext]',
+                    },
                 },
                 {
                     test: /\.(svg|eot|ttf|woff|woff2)$/i,
                     type: 'asset/resource',
                     include: path.resolve(__dirname, './src/fonts'),
                     generator: {
-                        filename: 'assets/fonts/[hash][ext]'
-                    }
+                        filename: 'assets/fonts/[hash][ext]',
+                    },
                 },
                 {
                     test: /\.html$/i,
                     include: path.resolve(__dirname, './src/html/includes'),
-                    use: [{ loader: 'html-loader', options: {
-                            minimize: false,
-                        } }],
-
+                    use: [
+                        {
+                            loader: 'html-loader',
+                            options: {
+                                minimize: false,
+                            },
+                        },
+                    ],
                 },
-            ]
+            ],
         },
         plugins: [
             new CleanWebpackPlugin(),
             new MiniCssExtractPlugin({
                 filename: `./assets/css/${filename('css')}`,
             }),
-        ].concat(htmlPlugins)
+        ].concat(htmlPlugins),
     }
 }
