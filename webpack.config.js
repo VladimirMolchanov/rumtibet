@@ -2,6 +2,7 @@ const path = require('path')
 const fs = require('fs')
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 
 function generateHtmlPlugins(templateDir) {
     const templateFiles = fs.readdirSync(path.resolve(__dirname, templateDir));
@@ -26,7 +27,15 @@ module.exports = {
         filename: "[name].[fullhash].build.js",
         path: path.resolve(__dirname, './dist'),
         assetModuleFilename: 'assets/[name][ext]',
-        clean: true
+        // clean: true
+    },
+    devServer: {
+        watchFiles: path.join(__dirname, './src'),
+        open: true,
+        client: {
+            overlay: true,
+        },
+        magicHtml: true,
     },
     devtool: 'source-map',
     module: {
@@ -77,6 +86,7 @@ module.exports = {
         ]
     },
     plugins: [
+        new CleanWebpackPlugin(),
         new MiniCssExtractPlugin({
             filename: "./assets/css/[name].[hash].css",
         }),
