@@ -25,6 +25,7 @@ module.exports = {
     output: {
         filename: "[name].[fullhash].build.js",
         path: path.resolve(__dirname, './dist'),
+        assetModuleFilename: 'assets/[name][ext]',
         clean: true
     },
     devtool: 'source-map',
@@ -53,6 +54,14 @@ module.exports = {
                 ]
             },
             {
+                test: /\.(png|jpe?g|gif|svg)$/i,
+                include: path.resolve(__dirname, './src/img'),
+                type: 'asset/resource',
+                generator: {
+                    filename: 'assets/images/[hash][ext]'
+                }
+            },
+            {
                 test: /\.html$/i,
                 include: path.resolve(__dirname, './src/html/includes'),
                 use: [{ loader: 'html-loader' }],
@@ -61,7 +70,7 @@ module.exports = {
     },
     plugins: [
         new MiniCssExtractPlugin({
-            filename: "./css/[name].[hash].css",
+            filename: "./assets/css/[name].[hash].css",
         }),
     ].concat(htmlPlugins)
 }
