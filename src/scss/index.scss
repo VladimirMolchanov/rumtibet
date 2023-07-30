@@ -1,5 +1,6 @@
-@import 'fonts';
-@import 'main';
+// Import all of Bootstrap's CSS
+@import "fonts";
+@import "~bootstrap/scss/bootstrap";
 
 .roboto {
     font-family: 'Roboto', sans-serif;
