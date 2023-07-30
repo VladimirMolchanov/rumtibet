@@ -9,5 +9,9 @@
         <meta http-equiv="X-UA-Compatible" content="ie=edge" />
         <title>Document</title>
     </head>
-    <body></body>
+    <body>
+        <% var data = { logo: require("../../img/logo.svg"), }; %> <%=
+        _.template(require('./../includes/header.html').default)(data) %> <%=
+        _.template(require('./../includes/main.html').default)(data) %>
+    </body>
 </html>

@@ -1,7 +1,9 @@
 // Import all of Bootstrap's CSS
-@import "fonts";
-@import "~bootstrap/scss/bootstrap";
+@import 'fonts';
+@import 'vendor/custom-bootsrap';
 
-.roboto {
-    font-family: 'Roboto', sans-serif;
+@import 'main';
+
+body {
+    font-family: 'Nunito Sans', sans-serif;
 }
